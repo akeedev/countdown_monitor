@@ -1,4 +1,5 @@
 # countdown_monitor
+(c) @drakee @ gitub
 
 ## Motivation
 I like the workout videos of Heather Robertson (https://heatherrobertson.com/), or
