@@ -34,3 +34,4 @@ data/
 
 # Claude Code
 .claude/
+/countdown_region.json
