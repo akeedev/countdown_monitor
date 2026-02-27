@@ -15,7 +15,7 @@ Emit sounds when the countdown goes to zero.
 3. Restrictions:
   3a. Only works on MacOS.
   3b. CLI only
-  4b. No full-screen mode supported (reason: this would complicate screen capture)
+  3c. No full-screen mode supported (reason: this would complicate screen capture)
 
 Usage: open a video in your browser. Open the shell and run this app in setup mode 
 to select the screen region containing the countdown (click a rectangle arounw the 
@@ -40,8 +40,10 @@ https://claude.ai/share/245dfdb1-cc7a-406c-8aff-4f6773d010cc
 
 
 ## Requirements
-
-- Python >= 3.12
+- Python --- I ran it on python 3.12
+- see requirements.txt
+- Program needs MacOS rights to read screen. When you run the app for the first time,
+you will be asked to grant these rights to the MacOS app in which you run python. 
 - tesseract, a tool for OCR must be installed, e.g.
 ```
 > brew install tesseract

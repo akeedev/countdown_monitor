@@ -11,13 +11,14 @@ import time
 import subprocess
 import json
 from pathlib import Path
+import sys
 
 try:
     import pytesseract
 except ImportError:
     print("pytesseract not found. Install with: pip install pytesseract")
     print("Also install Tesseract OCR: brew install tesseract")
-    exit(1)
+    sys.exit(1)
 
 CONFIG_FILE = Path(__file__).parent / "countdown_region.json"
 
@@ -63,6 +64,10 @@ def select_region() -> dict:
     """Interactive region selection using OpenCV."""
     print("\n=== Region Selection ===")
     print("1. Taking full screenshot...")
+    print("   Note: I've found no way to do this from Jupyter in Pycharm")
+    print("   It seems mouse and keyboard capture don't work from Jupyter in Pycharm")
+    print("   You can exit by exiting the Jupyter kernel in Pycharm")
+    print()
 
     with mss.mss() as sct:
         monitor = sct.monitors[1]  # Primary monitor
@@ -76,6 +81,8 @@ def select_region() -> dict:
     display_img = cv2.resize(img, None, fx=scale, fy=scale)
 
     print("2. Select the countdown region (drag a rectangle)")
+    print("   Note: you can only select a region within this screen,")
+    print("   full screen or other spaces don't work. ")
     print("   Press ENTER to confirm, C to cancel")
 
     roi = cv2.selectROI("Select Countdown Region", display_img, fromCenter=False)
@@ -164,6 +171,15 @@ def run_detection(region: dict):
 
 def main():
     import argparse
+    import platform
+    import sys
+
+    if platform.system() != "Darwin":
+        sys.stderr.write("This script is designed for macOS.\n")
+        sys.stderr.write("Recognized system: " + str(platform.system()) + "\n")
+        sys.stderr.write("Exiting.\n\n")
+        sys.exit(1)
+
     parser = argparse.ArgumentParser(description="Workout Countdown Detector")
     parser.add_argument("--setup", action="store_true", help="Select screen region")
     parser.add_argument("--test", action="store_true", help="Test OCR on current region")
@@ -178,6 +194,7 @@ def main():
         if not region:
             print("No region configured. Run with --setup first.")
             return
+        print(f"Loaded previously saved region.")
         img = capture_region(region)
         cv2.imwrite("test_capture.png", img)
         number = extract_number(img)
@@ -188,6 +205,7 @@ def main():
         if not region:
             print("No region configured. Run with --setup first.")
             return
+        print(f"Loaded previously saved region.")
         run_detection(region)
 
 
